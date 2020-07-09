@@ -1,17 +1,18 @@
 import React,  {useState, useEffect} from 'react'
 import { API_ROOT, HEADERS } from '../constants/api';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import Name from './Name'
 import NameForm from './NameForm'
 import Select from './Select'
 import { ActionCableConsumer } from 'react-actioncable-provider';
+import {connect} from 'react-redux'
 
 
-const List = ({history: {location: {search}}}) => {
+const List = ({names, setNames, addName}) => {
 
-  const [list, setList] = useState(search? search.slice(9): search)
+  let location = useLocation()
 
-  const [names, setNames] = useState([])
+  const [list, setList] = useState(location.search ? location.search.slice(9): location.search)
 
   const [criteria, changeCriteria] = useState("name")
 
@@ -31,7 +32,7 @@ const List = ({history: {location: {search}}}) => {
         .then(resp => resp.json())
         .then(json => setList(json.list))
       }
-      else if (search === "") {
+      else if (location.search === "") {
         // 2. if list exist change the url
         history.push(`/?list_id=${list}`)
       }
@@ -39,27 +40,16 @@ const List = ({history: {location: {search}}}) => {
         // 3. and finally, get the initial names
         fetch(`${API_ROOT}/names/${list}`)
           .then(resp => resp.json())
-          .then(json => setNames(json.names))
+          .then(json => {
+            console.log("names: " +json.names)
+            setNames(json.names)})
       }
       
-    }, [list, search, names, history])
+    }, [list, names, history])
 
-  const handleReceived = name => setNames([...names.filter(n => n.id !== name.id), name])
+  const handleReceived = name => addName(name)
   
-  const cross = (item) => {
-    const name = {
-      id: item.id,
-      crossed: item.crossed,
-      list: item.list
-    }
 
-    fetch(`${API_ROOT}/name`, {
-      method: "PATCH",
-      headers: HEADERS,
-      body: JSON.stringify({name})
-    })
-    .then(() => setNames([...names.filter(n => n.id !== item.id), item]))
-  }
 
   const sortedNames = () => names.sort((a,b) => order === 'ascending' ? compareNames(a,b) : compareNames(b,a))
   
@@ -67,8 +57,9 @@ const List = ({history: {location: {search}}}) => {
   const compareNames = (a,b) => isNaN(a[criteria]) ? a[criteria].localeCompare(b[criteria]) : a[criteria] - b[criteria]
 
 
+  console.log(list, names)
   return (
-    search.length 
+    list !== ""
     ? <>
         <ActionCableConsumer
           channel={{channel: 'NamesChannel', list: list}}
@@ -93,10 +84,22 @@ const List = ({history: {location: {search}}}) => {
             </>
           : null}
         <NameForm list = {list}/>
-        {sortedNames().map(item => <Name key = {item.id} item={item} cross = {cross}/>)}
+        {sortedNames().map(item => <Name key = {item.id} item={item}/>)}
       </>
     : <div> "Wait a second ..." </div>
   )
 }
 
-export default List
+const mapStateToProps = (state) => {
+  return {names: state.namesReducer.names}
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setNames: ((names) => dispatch({type: "setNames", names: names})),
+    addName: ((name) => dispatch({type: "addName", name: name}))
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(List)
