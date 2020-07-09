@@ -3,6 +3,7 @@ import { API_ROOT, HEADERS } from '../constants/api';
 import { useHistory } from 'react-router-dom';
 import Name from './Name'
 import NameForm from './NameForm'
+import Select from './Select'
 import { ActionCableConsumer } from 'react-actioncable-provider';
 
 
@@ -12,7 +13,12 @@ const List = ({history: {location: {search}}}) => {
 
   const [names, setNames] = useState([])
 
+  const [criteria, changeCriteria] = useState("name")
+
+  const [order, changeOrder] = useState("ascending")
+
   const history = useHistory()
+
 
   useEffect(()=> {
       if (!list.length){
@@ -55,6 +61,12 @@ const List = ({history: {location: {search}}}) => {
     .then(() => setNames([...names.filter(n => n.id !== item.id), item]))
   }
 
+  const sortedNames = () => names.sort((a,b) => order === 'ascending' ? compareNames(a,b) : compareNames(b,a))
+  
+
+  const compareNames = (a,b) => isNaN(a[criteria]) ? a[criteria].localeCompare(b[criteria]) : a[criteria] - b[criteria]
+
+
   return (
     search.length 
     ? <>
@@ -62,8 +74,26 @@ const List = ({history: {location: {search}}}) => {
           channel={{channel: 'NamesChannel', list: list}}
           onReceived={handleReceived}
         />
+        {names.length > 2 
+          ? <>
+              <Select 
+              options={Object.keys(names[0])} 
+              onChange = {changeCriteria}
+              active = {criteria}
+              name = "sort"
+              label = "Sort by:"
+              /> 
+              <Select 
+              options={['ascending', 'descending']} 
+              onChange = {changeOrder}
+              active = {order}
+              name = "order"
+              label = "Order:"
+              /> 
+            </>
+          : null}
         <NameForm list = {list}/>
-        {names.map(item => <Name key = {item.id} item={item} cross = {cross}/>)}
+        {sortedNames().map(item => <Name key = {item.id} item={item} cross = {cross}/>)}
       </>
     : <div> "Wait a second ..." </div>
   )
