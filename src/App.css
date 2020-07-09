@@ -1,38 +1,31 @@
-.App {
-  text-align: center;
+.container{
+  background-color: lightsteelblue;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.2rem;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.container h1 {
+    font-family: "Sacramento", cursive;
+    font-size: 3rem;
+    /* color: #fff; */
+    /* font-family: "Berkshire Swash", cursive; */
+    font-weight: 800;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.container form input, .container select {
+  font-family: inherit;
+  font-size: inherit;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.container form{
+  margin: 0.5em;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}

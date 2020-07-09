@@ -52,12 +52,15 @@ const List = ({names, setNames, addName}) => {
   const compareNames = (a,b) => isNaN(a[criteria]) ? a[criteria].localeCompare(b[criteria]) : a[criteria] - b[criteria]
 
   return (
-    list !== ""
-    ? <>
+    <div className = "container">
+    {list !== ""
+    ? 
+      <>
         <ActionCableConsumer
           channel={{channel: 'NamesChannel', list: list}}
           onReceived={handleReceived}
         />
+        <h1>This is your list, sir:</h1>
         {names.length > 2 
           ? <>
               <Select 
@@ -77,9 +80,12 @@ const List = ({names, setNames, addName}) => {
             </>
           : null}
         <NameForm list = {list}/>
-        {sortedNames().map(item => <Name key = {item.id} item={item}/>)}
+        <ul>
+          {sortedNames().map(item => <Name key = {item.id} item={item}/>)}
+        </ul>
       </>
-    : <div> "Wait a second ..." </div>
+    : <h1> "Wait a second ..." </h1>}
+    </div>
   )
 }
 

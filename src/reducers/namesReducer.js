@@ -11,9 +11,8 @@ const namesReducer = (state = initialNames,action) => {
             return {names: [
               ...state.names.filter(n => n.id !== action.name.id), 
               action.name
-            
             ]}
-      default: 
+      default:
           return state
   }
 
