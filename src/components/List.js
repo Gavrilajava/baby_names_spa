@@ -40,24 +40,17 @@ const List = ({names, setNames, addName}) => {
         // 3. and finally, get the initial names
         fetch(`${API_ROOT}/names/${list}`)
           .then(resp => resp.json())
-          .then(json => {
-            console.log("names: " +json.names)
-            setNames(json.names)})
+          .then(json => {setNames(json.names)})
       }
       
-    }, [list, names, history])
+    }, [list, names, location.search, history, setNames])
 
   const handleReceived = name => addName(name)
   
-
-
   const sortedNames = () => names.sort((a,b) => order === 'ascending' ? compareNames(a,b) : compareNames(b,a))
   
-
   const compareNames = (a,b) => isNaN(a[criteria]) ? a[criteria].localeCompare(b[criteria]) : a[criteria] - b[criteria]
 
-
-  console.log(list, names)
   return (
     list !== ""
     ? <>
