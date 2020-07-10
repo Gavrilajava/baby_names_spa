@@ -63,22 +63,29 @@ const List = ({names, setNames, addName, criteria, changeCriteria}) => {
           onReceived={handleReceived}
         />
         <h1>This is your list, sir:</h1>
-        {names.length > 2 
+        {names.length > 1 
           ? <>
-              <Select 
-              options={Object.keys(names[0])} 
-              onChange = {changeCriteria}
-              active = {criteria}
-              name = "sort"
-              label = "Sort by:"
-              /> 
-              <Select 
-              options={['ascending', 'descending']} 
-              onChange = {changeOrder}
-              active = {order}
-              name = "order"
-              label = "Order:"
-              /> 
+              <div className= "disclaimer"> 
+                <p>
+                  Here you can select criteria and order of names sorting. 
+                  If you will choose manual, you can drag them with the mouse. 
+                  Sorting criteria values displayed for your convinience.
+                </p>
+                <Select 
+                options={Object.keys(names[0])} 
+                onChange = {changeCriteria}
+                active = {criteria}
+                name = "sort"
+                label = "Sort by:"
+                /> 
+                <Select 
+                options={['ascending', 'descending']} 
+                onChange = {changeOrder}
+                active = {order}
+                name = "order"
+                label = "Order:"
+                /> 
+              </div>
             </>
           : null}
         <NameForm list = {list}/>

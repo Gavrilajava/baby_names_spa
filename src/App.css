@@ -29,3 +29,15 @@
   align-items: center;
 }
 
+.disclaimer {
+  width: 30vw;
+  padding: 0.5em;
+  margin-bottom: 1em;
+  border: 1px black solid;
+  border-radius: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: blanchedalmond;
+  box-shadow: 6px 6px 12px black;
+}
