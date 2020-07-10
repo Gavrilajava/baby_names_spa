@@ -13,9 +13,9 @@ const store = createStore(rootReducer)
 
 ReactDOM.render(
   <Provider store={store}>
-    <ActionCableProvider url={API_WS_ROOT}>
+    {/* <ActionCableProvider url={API_WS_ROOT}> */}
       <App />
-    </ActionCableProvider>
+    {/* </ActionCableProvider> */}
   </Provider>,
   document.getElementById('root')
 );
