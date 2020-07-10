@@ -2,8 +2,6 @@ import React from 'react'
 
 const Select = ({options, onChange, active, title, label }) => {
 
-
-  debugger
   return(
     <>
       <label htmlFor={title}>{label}</label>

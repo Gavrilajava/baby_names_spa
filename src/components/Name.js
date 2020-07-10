@@ -3,10 +3,9 @@ import {connect} from 'react-redux'
 import { API_ROOT, HEADERS } from '../constants/api';
 import Draggable from 'react-draggable';
 
-const Name = ({criteria, editName, item}) => {
+const Name = ({criteria, editName, item, setNames}) => {
 
   const update = (item) => {
-    debugger
     const name = {
       id: item.id,
       crossed: item.crossed,
@@ -18,7 +17,8 @@ const Name = ({criteria, editName, item}) => {
       headers: HEADERS,
       body: JSON.stringify({name})
     })
-    .then(() => editName(item))
+    .then(resp => resp.json())
+    .then(json => setNames(json))
   }
 
   
@@ -27,7 +27,6 @@ const Name = ({criteria, editName, item}) => {
     const manual = parseInt(item.manual) + parseInt(data.y)
     item = {...item, manual: manual}
     update(item)
-    console.log(item.name + " updated: " + manual)
   }
 
   const handleClick = () => {
@@ -43,6 +42,7 @@ const Name = ({criteria, editName, item}) => {
       axis="y"
       onStop = {(e, data) => handleStopDrag(e, data, item)}
       disabled= {criteria !== "manual"}
+      position = {{x: 0, y: 0}}
     >
       
       <li 
@@ -66,7 +66,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    editName: ((name) => dispatch({type: "editName", name: name}))
+    editName: ((name) => dispatch({type: "editName", name: name})),
+    setNames: ((names) => dispatch({type: "setNames", names: names}))
   }
 }
 

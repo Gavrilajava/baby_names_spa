@@ -43,7 +43,7 @@ const List = ({names, setNames, addName, criteria, changeCriteria}) => {
           .then(json => {setNames(json.names)})
       }
       
-    }, [])
+    }, [history, list, location.search, names.length, setNames])
 
   const handleReceived = name => addName(name)
   
