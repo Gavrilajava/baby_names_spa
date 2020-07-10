@@ -1,33 +1,57 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import { API_ROOT, HEADERS } from '../constants/api';
+import Draggable from 'react-draggable';
 
-const Name = ({names, editName, item}) => {
+const Name = ({criteria, editName, item}) => {
 
-  const cross = (item) => {
+  const update = (item) => {
     const name = {
       id: item.id,
       crossed: item.crossed,
-      list: item.list
+      list: item.list,
+      manual: item.manual
     }
-
     fetch(`${API_ROOT}/name`, {
       method: "PATCH",
       headers: HEADERS,
       body: JSON.stringify({name})
     })
-    .then(() => editName(item))
+    // .then(() => editName(item))
   }
 
   const {name, crossed} = item
 
+  const handleStopDrag = (e, data, item) => {
+    const manual = parseInt(item.manual) + parseInt(data.y)
+    item = {...item, manual: manual}
+    update(item)
+    console.log(item.name + " updated: " + manual)
+  }
+
   return (
-    <li style = {{textDecoration: crossed? "line-through" : "none"}} onClick = {() => cross({...item, crossed: !crossed})}>{name}</li>
+    <Draggable
+      axis="y"
+      onStop = {(e, data) => handleStopDrag(e, data, item)}
+      disabled= {criteria !== "manual"}
+    >
+      <li 
+        style = {{
+          textDecoration: crossed? "line-through" : "none",
+          height: "20px"
+        }} 
+        onClick = {() => update({...item, cross: !crossed})}
+      >
+        {name} {item.manual}
+      </li>
+    </Draggable>
   )
 }
 
 const mapStateToProps = (state) => {
-  return {names: state.namesReducer.names}
+  return {
+    criteria: state.sortingCriteriaReducer.criteria
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {

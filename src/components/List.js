@@ -8,13 +8,13 @@ import { ActionCableConsumer } from 'react-actioncable-provider';
 import {connect} from 'react-redux'
 
 
-const List = ({names, setNames, addName}) => {
+const List = ({names, setNames, addName, criteria, changeCriteria}) => {
 
   let location = useLocation()
 
   const [list, setList] = useState(location.search ? location.search.slice(9): location.search)
 
-  const [criteria, changeCriteria] = useState("name")
+  // const [criteria, changeCriteria] = useState("name")
 
   const [order, changeOrder] = useState("ascending")
 
@@ -51,6 +51,8 @@ const List = ({names, setNames, addName}) => {
   
   const compareNames = (a,b) => isNaN(a[criteria]) ? a[criteria].localeCompare(b[criteria]) : a[criteria] - b[criteria]
 
+
+  console.log('rendered')
   return (
     <div className = "container">
     {list !== ""
@@ -90,13 +92,17 @@ const List = ({names, setNames, addName}) => {
 }
 
 const mapStateToProps = (state) => {
-  return {names: state.namesReducer.names}
+  return {
+    names: state.namesReducer.names,
+    criteria: state.sortingCriteriaReducer.criteria
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     setNames: ((names) => dispatch({type: "setNames", names: names})),
-    addName: ((name) => dispatch({type: "addName", name: name}))
+    addName: ((name) => dispatch({type: "addName", name: name})),
+    changeCriteria: ((criteria) => dispatch({type: "changeCriteria", criteria: criteria}))
   }
 }
 
