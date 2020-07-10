@@ -43,7 +43,7 @@ const List = ({names, setNames, criteria, changeCriteria, order, changeOrder}) =
   const compareNames = (a,b) => isNaN(a[criteria]) ? a[criteria].localeCompare(b[criteria]) : a[criteria] - b[criteria]
 
 
-  console.log('rendered')
+  console.log(criteria, order)
   return (
     <div className = "container">
     {list !== ""
@@ -88,7 +88,7 @@ const mapStateToProps = (state) => {
   return {
     names: state.namesReducer.names,
     criteria: state.sortingCriteriaReducer.criteria,
-    order: state.sortingCriteriaReducer.order
+    order: state.sortingOrderReducer.order
   }
 }
 
