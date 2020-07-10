@@ -1,14 +1,13 @@
 import React,  {useState, useEffect} from 'react'
-import { API_ROOT, HEADERS, API_WS_ROOT } from '../constants/api';
+import { API_ROOT, HEADERS } from '../constants/api';
 import { useHistory, useLocation } from 'react-router-dom';
 import Name from './Name'
 import NameForm from './NameForm'
 import Select from './Select'
-import actioncable from 'actioncable';
 import {connect} from 'react-redux'
 
 
-const List = ({names, setNames, addName, criteria, changeCriteria}) => {
+const List = ({names, setNames, criteria, changeCriteria}) => {
 
   let location = useLocation()
 
@@ -17,8 +16,6 @@ const List = ({names, setNames, addName, criteria, changeCriteria}) => {
   const [order, changeOrder] = useState("ascending")
 
   const history = useHistory()
-
-  // const cable = actioncable.createConsumer(API_WS_ROOT)
 
   useEffect(()=> {
       if (!list.length){
@@ -40,9 +37,7 @@ const List = ({names, setNames, addName, criteria, changeCriteria}) => {
         fetch(`${API_ROOT}/names/${list}`)
           .then(resp => resp.json())
           .then(json => {setNames(json.names)})
-          // .then(() => subscribeToCable())
       }
-      // return (() => cable.disconnect())
     }, [history, list, location.search, names.length, setNames])
  
   const sortedNames = () => names.sort((a,b) => order === 'ascending' ? compareNames(a,b) : compareNames(b,a))
@@ -56,35 +51,30 @@ const List = ({names, setNames, addName, criteria, changeCriteria}) => {
     {list !== ""
     ? 
       <>
-        {/* <ActionCableConsumer
-          channel={{channel: 'NamesChannel', list: list}}
-          onReceived={handleReceived}
-        /> */}
+
         <h1>This is your list, sir:</h1>
         {names.length > 1 
-          ? <>
-              <div className= "disclaimer"> 
-                <p>
-                  Here you can select criteria and order of names sorting. 
-                  If you will choose manual, you can drag them with the mouse. 
-                  Sorting criteria values displayed for your convinience.
-                </p>
-                <Select 
-                options={Object.keys(names[0])} 
-                onChange = {changeCriteria}
-                active = {criteria}
-                name = "sort"
-                label = "Sort by:"
-                /> 
-                <Select 
-                options={['ascending', 'descending']} 
-                onChange = {changeOrder}
-                active = {order}
-                name = "order"
-                label = "Order:"
-                /> 
-              </div>
-            </>
+          ? <div className= "disclaimer"> 
+              <p>
+                Here you can select criteria and order of names sorting. 
+                If you will choose manual, you can drag them with the mouse. 
+                Sorting criteria values displayed for your convinience.
+              </p>
+              <Select 
+              options={Object.keys(names[0])} 
+              onChange = {changeCriteria}
+              active = {criteria}
+              name = "sort"
+              label = "Sort by:"
+              /> 
+              <Select 
+              options={['ascending', 'descending']} 
+              onChange = {changeOrder}
+              active = {order}
+              name = "order"
+              label = "Order:"
+              /> 
+            </div>
           : null}
         <NameForm list = {list}/>
         <label>Name{criteria === "name" ? null : ` - ${criteria}` }</label>
@@ -107,7 +97,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setNames: ((names) => dispatch({type: "setNames", names: names})),
-    addName: ((name) => dispatch({type: "addName", name: name})),
     changeCriteria: ((criteria) => dispatch({type: "changeCriteria", criteria: criteria}))
   }
 }

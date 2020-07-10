@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import { API_ROOT, HEADERS } from '../constants/api';
 import Draggable from 'react-draggable';
 
-const Name = ({criteria, editName, item, setNames}) => {
+const Name = ({criteria, item, setNames}) => {
 
   const update = (item) => {
     const name = {
@@ -44,7 +44,6 @@ const Name = ({criteria, editName, item, setNames}) => {
       disabled= {criteria !== "manual"}
       position = {{x: 0, y: 0}}
     >
-      
       <li 
         style = {{
           textDecoration: crossed? "line-through" : "none",
@@ -66,7 +65,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    editName: ((name) => dispatch({type: "editName", name: name})),
     setNames: ((names) => dispatch({type: "setNames", names: names}))
   }
 }
