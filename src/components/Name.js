@@ -21,7 +21,7 @@ const Name = ({criteria, editName, item}) => {
     .then(() => editName(item))
   }
 
-  const {name, crossed} = item
+  
 
   const handleStopDrag = (e, data, item) => {
     const manual = parseInt(item.manual) + parseInt(data.y)
@@ -29,6 +29,14 @@ const Name = ({criteria, editName, item}) => {
     update(item)
     console.log(item.name + " updated: " + manual)
   }
+
+  const handleClick = () => {
+    if (criteria !== "manual"){
+      update({...item, crossed: !crossed})
+    }
+  }
+
+  const {name, crossed} = item
 
   return (
     <Draggable
@@ -42,9 +50,9 @@ const Name = ({criteria, editName, item}) => {
           textDecoration: crossed? "line-through" : "none",
           height: "20px"
         }} 
-        onClick = {() => update({...item, crossed: !crossed})}
+        onClick = {handleClick}
       >
-        {name} - {item[criteria]}
+        {name + (criteria === "name" ? "" : ` - ${item[criteria]}`)}
       </li>
     </Draggable>
   )
