@@ -49,7 +49,6 @@ const List = ({names, setNames, criteria, changeCriteria, order, changeOrder}) =
     {list !== ""
     ? 
       <>
-
         <h1>This is your list, sir:</h1>
         {names.length > 1 
           ? <div className= "disclaimer"> 
