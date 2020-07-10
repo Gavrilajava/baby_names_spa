@@ -42,8 +42,6 @@ const List = ({names, setNames, criteria, changeCriteria, order, changeOrder}) =
   
   const compareNames = (a,b) => isNaN(a[criteria]) ? a[criteria].localeCompare(b[criteria]) : a[criteria] - b[criteria]
 
-
-  console.log(criteria, order)
   return (
     <div className = "container">
     {list !== ""

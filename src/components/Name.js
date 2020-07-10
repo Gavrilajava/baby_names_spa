@@ -22,7 +22,7 @@ const Name = ({criteria, order, item, setNames}) => {
   }
 
   
-
+  
   const handleStopDrag = (e, data, item) => {
     const manual = order === 'ascending' ? parseInt(item.manual) + parseInt(data.y) : parseInt(item.manual) - parseInt(data.y)
     item = {...item, manual: manual}
@@ -60,7 +60,7 @@ const Name = ({criteria, order, item, setNames}) => {
 const mapStateToProps = (state) => {
   return {
     criteria: state.sortingCriteriaReducer.criteria,
-    order: state.sortingCriteriaReducer.order
+    order: state.sortingOrderReducer.order
   }
 }
 
