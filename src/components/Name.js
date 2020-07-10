@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import { API_ROOT, HEADERS } from '../constants/api';
 import Draggable from 'react-draggable';
 
-const Name = ({criteria, item, setNames}) => {
+const Name = ({criteria, order, item, setNames}) => {
 
   const update = (item) => {
     const name = {
@@ -24,7 +24,7 @@ const Name = ({criteria, item, setNames}) => {
   
 
   const handleStopDrag = (e, data, item) => {
-    const manual = parseInt(item.manual) + parseInt(data.y)
+    const manual = order === 'ascending' ? parseInt(item.manual) + parseInt(data.y) : parseInt(item.manual) - parseInt(data.y)
     item = {...item, manual: manual}
     update(item)
   }
@@ -59,7 +59,8 @@ const Name = ({criteria, item, setNames}) => {
 
 const mapStateToProps = (state) => {
   return {
-    criteria: state.sortingCriteriaReducer.criteria
+    criteria: state.sortingCriteriaReducer.criteria,
+    order: state.sortingCriteriaReducer.order
   }
 }
 

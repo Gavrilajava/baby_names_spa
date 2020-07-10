@@ -7,13 +7,11 @@ import Select from './Select'
 import {connect} from 'react-redux'
 
 
-const List = ({names, setNames, criteria, changeCriteria}) => {
+const List = ({names, setNames, criteria, changeCriteria, order, changeOrder}) => {
 
   let location = useLocation()
 
   const [list, setList] = useState(location.search ? location.search.slice(9): location.search)
-
-  const [order, changeOrder] = useState("ascending")
 
   const history = useHistory()
 
@@ -90,14 +88,16 @@ const List = ({names, setNames, criteria, changeCriteria}) => {
 const mapStateToProps = (state) => {
   return {
     names: state.namesReducer.names,
-    criteria: state.sortingCriteriaReducer.criteria
+    criteria: state.sortingCriteriaReducer.criteria,
+    order: state.sortingCriteriaReducer.order
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     setNames: ((names) => dispatch({type: "setNames", names: names})),
-    changeCriteria: ((criteria) => dispatch({type: "changeCriteria", criteria: criteria}))
+    changeCriteria: ((criteria) => dispatch({type: "changeCriteria", criteria: criteria})),
+    changeOrder: ((order) => dispatch({type: "changeOrder", order: order}))
   }
 }
 
