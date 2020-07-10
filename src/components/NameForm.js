@@ -24,11 +24,16 @@ const NameForm = ({list}) => {
       })
   }
 
+  const handleChange = e => {
+    changeName(e.target.value)
+    setError(null)
+  }
+
   return (
     <form onSubmit={(e) => handleSubmit(e)}>
-      {error? <label>{error}</label> : null}
+      {error? <label style = {{color: "red"}}>{error}</label> : null}
       <label htmlFor="name">New Name:</label>
-      <input value = {name} onChange = {(e) => changeName(e.target.value)}/>
+      <input value = {name} onChange = {handleChange}/>
       <input type="submit" value="Submit"/>
     </form>
   )

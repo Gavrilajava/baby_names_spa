@@ -6,6 +6,7 @@ import Draggable from 'react-draggable';
 const Name = ({criteria, editName, item}) => {
 
   const update = (item) => {
+    debugger
     const name = {
       id: item.id,
       crossed: item.crossed,
@@ -17,7 +18,7 @@ const Name = ({criteria, editName, item}) => {
       headers: HEADERS,
       body: JSON.stringify({name})
     })
-    // .then(() => editName(item))
+    .then(() => editName(item))
   }
 
   const {name, crossed} = item
@@ -35,14 +36,15 @@ const Name = ({criteria, editName, item}) => {
       onStop = {(e, data) => handleStopDrag(e, data, item)}
       disabled= {criteria !== "manual"}
     >
+      
       <li 
         style = {{
           textDecoration: crossed? "line-through" : "none",
           height: "20px"
         }} 
-        onClick = {() => update({...item, cross: !crossed})}
+        onClick = {() => update({...item, crossed: !crossed})}
       >
-        {name} {item.manual}
+        {name} - {item[criteria]}
       </li>
     </Draggable>
   )

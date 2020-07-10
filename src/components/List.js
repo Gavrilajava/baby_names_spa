@@ -82,6 +82,7 @@ const List = ({names, setNames, addName, criteria, changeCriteria}) => {
             </>
           : null}
         <NameForm list = {list}/>
+        <label>Name{criteria === "name" ? null : ` - ${criteria}` }</label>
         <ul>
           {sortedNames().map(item => <Name key = {item.id} item={item}/>)}
         </ul>
