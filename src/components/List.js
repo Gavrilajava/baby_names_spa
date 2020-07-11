@@ -5,11 +5,12 @@ import Name from './Name'
 import NameForm from './NameForm'
 import Select from './Select'
 import {connect} from 'react-redux'
+import {isBrowser} from 'react-device-detect'
 
 
 const List = ({names, setNames, criteria, changeCriteria, order, changeOrder}) => {
 
-  let location = useLocation()
+  const location = useLocation()
 
   const [list, setList] = useState(location.search ? location.search.slice(9): location.search)
 
@@ -47,7 +48,9 @@ const List = ({names, setNames, criteria, changeCriteria, order, changeOrder}) =
     {list !== ""
     ? 
       <>
-        <h1>This is your list, sir:</h1>
+        {isBrowser
+          ? <h1>This is your list,{/* miserable*/} human:</h1>
+          : <h1>All hail to robots! Here is the list:</h1>}
         {names.length > 1 
           ? <div className= "disclaimer"> 
               <p>
