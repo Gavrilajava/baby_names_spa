@@ -80,7 +80,7 @@ const List = ({names, setNames, criteria, changeCriteria, order, changeOrder}) =
           {sortedNames().map(item => <Name key = {item.id} item={item}/>)}
         </ul>
       </>
-    : <h1> "Wait a second ..." </h1>}
+    : <h1> Wait a second ... </h1>}
     </div>
   )
 }
