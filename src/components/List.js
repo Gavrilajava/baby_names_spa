@@ -35,7 +35,7 @@ const List = ({names, setNames, criteria, changeCriteria, order, changeOrder}) =
         // 3. and finally, get the initial names
         fetch(`${API_ROOT}/names/${list}`)
           .then(resp => resp.json())
-          .then(json => {setNames(json.names)})
+          .then(json => setNames(json.names))
       }
     }, [history, list, location.search, names.length, setNames])
  
@@ -59,18 +59,18 @@ const List = ({names, setNames, criteria, changeCriteria, order, changeOrder}) =
                 Sorting criteria values displayed for your convinience.
               </p>
               <Select 
-              options={Object.keys(names[0])} 
-              onChange = {changeCriteria}
-              active = {criteria}
-              name = "sort"
-              label = "Sort by:"
+                options={Object.keys(names[0])} 
+                onChange = {changeCriteria}
+                active = {criteria}
+                name = "sort"
+                label = "Sort by:"
               /> 
               <Select 
-              options={['ascending', 'descending']} 
-              onChange = {changeOrder}
-              active = {order}
-              name = "order"
-              label = "Order:"
+                options={['ascending', 'descending']} 
+                onChange = {changeOrder}
+                active = {order}
+                name = "order"
+                label = "Order:"
               /> 
             </div>
           : null}
